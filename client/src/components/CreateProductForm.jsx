@@ -1,6 +1,36 @@
-function CreateProductForm() {
+import { useState } from "react";
+
+function CreateProductForm({ onSubmit }) {
+  const [product, setProduct] = useState({
+    name: "",
+    image: "",
+    price: "",
+    description: ""
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const newPostList = {
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      description: product.description
+    };
+    
+    onSubmit(newPostList); 
+    setProduct({ name: "", image: "", price: "", description: "" }); 
+  };
+
   return (
-    <form className="product-form">
+    <form className="product-form" onSubmit={submitHandler}>
       <h1>Create Product Form</h1>
       <div className="input-container">
         <label>
@@ -10,19 +40,21 @@ function CreateProductForm() {
             name="name"
             type="text"
             placeholder="Enter name here"
-            onChange={() => {}}
+            value={product.name}
+            onChange={handleInputChange}
           />
         </label>
       </div>
       <div className="input-container">
         <label>
-          Image Url
+          Image URL
           <input
             id="image"
             name="image"
             type="text"
-            placeholder="Enter image url here"
-            onChange={() => {}}
+            placeholder="Enter image URL here"
+            value={product.image}
+            onChange={handleInputChange}
           />
         </label>
       </div>
@@ -34,7 +66,8 @@ function CreateProductForm() {
             name="price"
             type="number"
             placeholder="Enter price here"
-            onChange={() => {}}
+            value={product.price}
+            onChange={handleInputChange}
           />
         </label>
       </div>
@@ -44,9 +77,9 @@ function CreateProductForm() {
           <textarea
             id="description"
             name="description"
-            type="text"
             placeholder="Enter description here"
-            onChange={() => {}}
+            value={product.description}
+            onChange={handleInputChange}
             rows={4}
             cols={30}
           />
